@@ -1,16 +1,22 @@
-# GetData-CourseProject
+# Get Data - Course Project
 
-This document describes the step-by-step on how to transform and summarize triaxial acceleration and angular velocity of typical body movements. The data was drawn from UCI Machine Learning Repository.
+This document provides the step-by-step on how to transform and summarize triaxial acceleration and angular velocity of typical body movements. The data - which was generated using motion processors on a Samsung Galaxy SIII - can be downloaded from UCI Machine Learning Repository.
 
 Dataset URL: 
-[http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones]
+http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 
-10299 samples
+The dataset provides:
+
+* 10299 samples
+* 561 measures for each sample
+* 6 motion activity types
 
 
-Step-by-step
+## Step-by-step on cleaning up data
 
-1) Read and merge test and training datasets.
+### 1. Read and merge test and training datasets.
+
+Using a list with values 'test' and 'train' we pass it into a for loop and perform the following operations.
 
 ```r
 sets <- c("test", "train")
@@ -34,7 +40,9 @@ for(set in sets){
 
 ```
 
-2) Extract only mean and standard deviation columns.
+### 2. Extract only mean and standard deviation columns.
+
+Using Regular Expressions, we were able to detect and filter only the desired columns: those regarding Mean and Std values.
 
 ```r
 extract_mean_std <- function(df){
@@ -43,7 +51,9 @@ extract_mean_std <- function(df){
 
 ```
 
-3) Name activities that were mere numbers on original raw file.
+### 3. Name activities that were mere numbers on original raw file.
+
+Simply replacing numbers ranging from 1 to 6 to their actual labels.
 
 ```r
 name_activities <- function(activity_data){
@@ -52,7 +62,10 @@ name_activities <- function(activity_data){
 }
 ```
 
-4) A series of replaces to make column names more readable.
+### 4. A series of replaces to make column names more readable.
+
+In order to having more readable column names, a 
+
 ```r
 col <- colnames(data)
 colnames(data) <- lapply(col, function(x){
@@ -72,15 +85,17 @@ colnames(data) <- lapply(col, function(x){
 })
 ```
 
-5) Grouping data by Subject id and Activity name; Summarising every other column by its mean value.
+### 5. Summarising data
+Using dplyr library, was possible to group data by Subject id and Activity name. Every other column was summarised using the Mean function.
 
 ```r
 library(dplyr)
 averages <- data %>% group_by(Subject, Activity) %>% summarise_each(funs(mean))
-
 ```
 
-6) Writing out the tidy data
+### 6. Writing out the tidy data
+
+Time to write this out to a flat txt file.
 
 ```r
 write.csv(data, file="tidydata.txt", col.names=FALSE)
