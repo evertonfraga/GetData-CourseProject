@@ -16,7 +16,6 @@ extract_mean_std <- function(df){
 }
 
 name_activities <- function(activity_data){
-  # TODO: Read from file
   activities <- c("WALKING", "WALKING_UPSTAIRS", "WALKING_DOWNSTAIRS", "SITTING", "STANDING", "LAYING")
   lapply(activity_data, function(x) activities[x])
 }
@@ -27,8 +26,8 @@ data <- NULL
 
 for(set in sets){
   x_filename <- paste("X_", set, ".txt", sep = "")
-  x_data_tmp <- read.table(file.path(set, x_filename), col.names = feature_col_names)
-  x_data <- extract_mean_std(x_data_tmp)
+  x_data <- read.table(file.path(set, x_filename), col.names = feature_col_names)
+  x_data <- extract_mean_std(x_data)
   
   y_filename <- paste("y_", set, ".txt", sep="")
   y_data <- read.table(file.path(set, y_filename), col.names = c('Activity'))
