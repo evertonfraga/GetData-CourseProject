@@ -1,0 +1,23 @@
+---
+title: "Codebook"
+output: html_document
+---
+
+This document aims to describe data stored in tidydata.txt.
+
+### Data dimensions
+```{r}
+data <- read.csv('data/tidydata.txt')
+dim(data)
+```
+
+### Column names
+```{r}
+str(data)
+```
+
+### First 6 data rows
+```{r}
+head(data)
+```
+
